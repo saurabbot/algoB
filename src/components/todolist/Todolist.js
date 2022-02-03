@@ -8,6 +8,7 @@ const Todolist = () => {
     const[todos,setTodos] = useState([]);
     const[showForm,setShowForm] = useState(false);
     const click = () => setShowForm(true);
+
     const addTodo = todo => {
         if(!todo.title|| /^\s*$/.test(todo.title)){
             return;
@@ -16,6 +17,10 @@ const Todolist = () => {
         setTodos(newTodos);
         console.log(todo,...todos);
     };
+    const searchTodo = (q) => {
+        let list = [...todos].filter(todo => todo.status=== q || todo.title === q || todo.tag === q);
+        setTodos(list);
+    }
     const removeTodo = id => {
         const filteredTodo = [...todos].filter(todo => todo.id !== id);
         setTodos(filteredTodo);
@@ -47,6 +52,7 @@ const Todolist = () => {
                 removeTodo={removeTodo}
                 editTodo={editTodo}
                 todos={todos}
+                searchTodo={searchTodo}
                 />
                 
             </div>

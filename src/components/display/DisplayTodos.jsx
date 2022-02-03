@@ -5,7 +5,11 @@ import ProTable from '@ant-design/pro-table';
 import { DownOutlined,SearchOutlined } from '@ant-design/icons';
 import { Input } from 'antd';
 import Form from '../form/Form';
-const DisplayTodos = ({todos,removeTodo,editTodo}) => {
+const DisplayTodos = ({todos,removeTodo,editTodo,searchTodo}) => {
+    const [query,setQuery] = useState('');
+    const handleSearchChange = (e) => {
+        setQuery(e.target.value.toLowerCase())
+    }
     const { Search } = Input;
     const [edit,setEdit] = useState({
         id: null,
@@ -94,13 +98,41 @@ const DisplayTodos = ({todos,removeTodo,editTodo}) => {
                     {row.status}
                 </Button>
                ),
-            filters: [
-                {text: 'Overdone', value: false},
-                {text: 'Done', value: true},
-                {text: 'Overdue',value: false},
-            ],
+               filterDropdown: ({setSelectedKeys,selectedKeys,confirm,clearFilters}) => {
+                return (
+                    <>
+                    <Input 
+                    autoFocus
+                    placeholder='search status'
+                    value={selectedKeys[0]}
+                    onChange={(e) => {
+                        setSelectedKeys(e.target.value ?  [e.target.value]: []);
+                    }}
+                    onPressEnter={() => {
+                        confirm();
+                    }}
+                    onBlur={() => {
+                        confirm();
+                    }}
+                    />
+                    <Button 
+                    type='danger' 
+                    style={{width: '40px',padding: '2px',height: '20px',fontSize: '10px'}}
+                    onClick={() => {
+                        clearFilters()
+                    }}
+                    > 
+                        Reset
+                    </Button>
+                    </>
+                    
+                )
+            },
+            filterIcon: () => {
+                return <SearchOutlined />
+            },
             onFilter: (value,record) => {
-                return record.status === value;
+                return record.status.toLowerCase().includes(value.toLowerCase());
             }
         },
         {
@@ -231,8 +263,10 @@ const DisplayTodos = ({todos,removeTodo,editTodo}) => {
                 autoFocus 
                 style={{borderRadius: '30px'}}
                 placeholder='search anything'
+                value={query}
+                onChange={handleSearchChange}
                 />
-                <Button style={{borderRadius: '30px',margin: '5px'}}>Search</Button>
+                <Button onClick={() => searchTodo(query)} style={{borderRadius: '30px',margin: '5px'}} >Search</Button>
             </div>
             <ProTable 
             dataSource={data}
@@ -242,8 +276,9 @@ const DisplayTodos = ({todos,removeTodo,editTodo}) => {
             }}
             style={{
                 width: '100%',
+                height: '100%'
             }}
-
+            
             />
         </>
         

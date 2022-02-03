@@ -5,6 +5,7 @@ const Form = (props) => {
     const [desc,setDesc] = useState(props.edit? props.edit.description: '');
     const [date,setDate] = useState(props.edit? props.edit.dueDate: '');
     const [status,setStatus] = useState(props.edit? props.edit.status: '');
+    const [err,setError] = useState(2);
     const [tag,setTag] = useState('');
     const handleChange = e => {
         setTitle(e.target.value);
@@ -23,7 +24,6 @@ const Form = (props) => {
     }
     const handleSubmit = e => {
         e.preventDefault();
-
         props.onSubmit({
         id: Math.floor(Math.random() * 10000),
         title: title,
@@ -54,6 +54,7 @@ const Form = (props) => {
                     required
                     className='todo-title'
                     />
+                    {!title.length && <p style={{color: 'red',top: '12px',fontSize: '9px'}}>Mandatory field</p>}
                     <textarea 
                     placeholder='Update Description'
                     value = {desc}
@@ -62,6 +63,7 @@ const Form = (props) => {
                     required
                     className='todo-desc'
                     />
+                    {!desc.length && <p style={{color: 'red',fontSize: '9px'}}>Mandatory Field</p>}
                     <input 
                     type="date"
                     placeholder='update date'
@@ -103,6 +105,7 @@ const Form = (props) => {
                     name='text'
                     className='todo-title'
                     />
+                    {!title.length && <p style={{color: 'red',top: '12px',fontSize: '9px'}}>Mandatory field</p>}
                     <textarea 
                     placeholder='Description'
                     value = {desc}
@@ -112,6 +115,7 @@ const Form = (props) => {
                     name='desc'
                     className='todo-desc'
                     />
+                    {!desc.length && <p style={{color: 'red',fontSize: '9px'}}>Mandatory Field</p>}
                     <input 
                     type="date"
                     placeholder='add date'
