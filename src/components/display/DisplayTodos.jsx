@@ -94,41 +94,13 @@ const DisplayTodos = ({todos,removeTodo,editTodo}) => {
                     {row.status}
                 </Button>
                ),
-            filterDropdown: ({setSelectedKeys,selectedKeys,confirm,clearFilters}) => {
-                return (
-                    <>
-                    <Input 
-                    autoFocus
-                    placeholder='search status'
-                    value={selectedKeys[0]}
-                    onChange={(e) => {
-                        setSelectedKeys(e.target.value ?  [e.target.value]: []);
-                    }}
-                    onPressEnter={() => {
-                        confirm();
-                    }}
-                    onBlur={() => {
-                        confirm();
-                    }}
-                    />
-                    <Button 
-                    type='danger' 
-                    style={{width: '40px',padding: '2px',height: '20px',fontSize: '10px'}}
-                    onClick={() => {
-                        clearFilters()
-                    }}
-                    > 
-                        Reset
-                    </Button>
-                    </>
-                    
-                )
-            },
-            filterIcon: () => {
-                return <SearchOutlined />
-            },
+            filters: [
+                {text: 'Overdone', value: false},
+                {text: 'Done', value: true},
+                {text: 'Overdue',value: false},
+            ],
             onFilter: (value,record) => {
-                return record.status.toLowerCase().includes(value.toLowerCase());
+                return record.status === value;
             }
         },
         {
